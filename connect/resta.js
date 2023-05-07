@@ -1394,7 +1394,7 @@ case 'update':
     await exec('git add .')
     await exec('git commit -m "Apdet:v"')
     await exec('git push')
-    m.reply('Successfully added new folder!')
+    m.reply('Successfully added')
   } catch (e) {
     console.error(e)
     m.reply('Failed to add new folder.')
