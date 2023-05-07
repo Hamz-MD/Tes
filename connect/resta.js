@@ -1382,11 +1382,11 @@ await Resta.sendContact(m.chat, eluwh, m)
 break
 case 'act':
 case 'ham':
-case 'update':
+case 'update': {
   await Resta.sendText(m.chat, `Looking for resources...`, m)
   const cp = require('child_process')
   const { promisify } = require('util')
-  const exec = promisify(cp.exec).bind(cp)
+  let exec = promisify(cp.exec).bind(cp)
   try {
     await exec('git pull')
     await exec('git submodule update --init --recursive')
@@ -1397,8 +1397,9 @@ case 'update':
     m.reply('Successfully added')
   } catch (e) {
     console.error(e)
-    m.reply('Failed to add new folder.')
+    m.reply(util.format(e))
   }
+}
   break
 case 'speed':
 case 'speedtest': {
