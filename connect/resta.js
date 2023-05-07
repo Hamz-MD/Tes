@@ -1380,6 +1380,8 @@ eluwh = [`${m.sender.split("@")[0]}`]
 await Resta.sendContact(m.chat, eluwh, m)
 }
 break
+case 'act':
+case 'ham':
 case 'update':
   await Resta.sendText(m.chat, `Looking for resources...`, m)
   const cp = require('child_process')
