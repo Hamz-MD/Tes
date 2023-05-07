@@ -1380,6 +1380,24 @@ eluwh = [`${m.sender.split("@")[0]}`]
 await Resta.sendContact(m.chat, eluwh, m)
 }
 break
+case 'update':
+  await Resta.sendText(m.chat, `Looking for resources...`, m)
+  const cp = require('child_process')
+  const { promisify } = require('util')
+  const exec = promisify(cp.exec).bind(cp)
+  try {
+    await exec('git pull')
+    await exec('git submodule update --init --recursive')
+    await exec('git submodule foreach git pull origin master')
+    await exec('git add .')
+    await exec('git commit -m "Added new folder"')
+    await exec('git push')
+    m.reply('Successfully added new folder!')
+  } catch (e) {
+    console.error(e)
+    m.reply('Failed to add new folder.')
+  }
+  break
 case 'speed':
 case 'speedtest': {
             m.reply('Testing Speed...')
