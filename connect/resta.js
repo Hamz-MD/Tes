@@ -1392,7 +1392,7 @@ case 'update':
     await exec('git submodule update --init --recursive')
     await exec('git submodule foreach git pull origin master')
     await exec('git add .')
-    await exec('git commit -m "Added new folder"')
+    await exec('git commit -m "Apdet:v"')
     await exec('git push')
     m.reply('Successfully added new folder!')
   } catch (e) {
