@@ -1393,9 +1393,8 @@ case 'update': {
     await exec('git submodule foreach git pull origin master')
     await exec('git add .')
     await exec('git commit -m "Apdet:v"')
-    const { stdout } = await exec('git push')
-    console.log(stdout)
-    m.reply(stdout.message)
+    await exec('git push')
+    m.reply(`git push has been added successfully`)
   } catch (e) {
     console.error(e)
     m.reply(util.format(e))
