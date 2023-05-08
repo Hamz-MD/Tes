@@ -1393,14 +1393,14 @@ case 'update': {
     await exec('git submodule foreach git pull origin master')
     await exec('git add .')
     await exec('git commit -m "Apdet:v"')
-    await exec('git push')
-    m.reply('Successfully added'+message)
+    const { stdout } = await exec('git push')
+    m.reply(util.format('Successfully added\n'+stdout))
   } catch (e) {
     console.error(e)
     m.reply(util.format(e))
   }
 }
-  break
+break
 case 'speed':
 case 'speedtest': {
             m.reply('Testing Speed...')
