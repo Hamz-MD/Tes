@@ -23207,6 +23207,64 @@
       "age": -1,
       "regTime": -1,
       "exp": 0
+    },
+    "6285294569788@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Nuyy Inay",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281514342715@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": true,
+      "name": "https://chat.whatsapp.com/GUaNbk7iU3nDhFF8EswMm1",
+      "age": 23,
+      "regTime": 1683523351216,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6288803617785@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "nizaar",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "628388433940@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Galaxy J2 Prime",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "62895600219191@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Aku Pelyaa",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     }
   },
   "pasangan": {},
@@ -26095,6 +26153,23 @@
       "antilink": false,
       "maintenance": false,
       "welcome": false
+    },
+    "120363029859638087@g.us": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "62895600219191@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "120363029382463134@g.us": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false
     }
   },
   "game": {}
