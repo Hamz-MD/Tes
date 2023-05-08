@@ -1383,6 +1383,7 @@ break
 case 'act':
 case 'ham':
 case 'update': {
+  if (!isOwner) return m.reply(mess.botOwner)
   await Resta.sendText(m.chat, `Looking for resources...`, m)
   const cp = require('child_process')
   const { promisify } = require('util')
@@ -1869,29 +1870,31 @@ case 'bc': case 'broadcast': case 'bcall': {
             }
               break
 			  case 'fetch':
-              case 'get': {
-                if (!text) return m.reply('mana linknya');
-                let url = new URL(text);  
-                let res = await fetch(url);
-                let bufg = await getBuffer(text);
-                if (parseInt(res.headers.get('content-length')) > 100 * 1024 * 1024) {
-                  delete res;
-                  throw new Error(`Content-Length: ${res.headers.get('content-length')}`);
-                }
-                if (!/text|json/.test(res.headers.get('content-type'))) {
-                  Resta.sendFile(m.chat, bufg, text, text, m);
-                } else {
-                  let txt = await res.text();
-                  try {
-                    txt = util.format(JSON.parse(txt));
-                  } catch (e) {
-                    txt += '';
-                  } finally {
-                    m.reply(txt.slice(0, 65536));
-                  }
-                }
+          case 'get': {
+            if (!text) return m.reply('mana linknya');
+            let url = new URL(text);
+            let res = await fetch(url);
+            let bufg = await getBuffer(text);
+            if (parseInt(res.headers.get('content-length')) > 100 * 1024 * 1024) {
+              delete res;
+              throw new Error(`Content-Length: ${res.headers.get('content-length')}`);
+            }
+            if (!/text|json/.test(res.headers.get('content-type'))) {
+              Resta.sendFile(m.chat, bufg, text, text, m);
+            } else {
+              let txt = await res.text();
+              try {
+                txt = util.format(JSON.parse(txt));
+              } catch (e) {
+                txt += '';
+              } finally {
+                m.reply(txt.slice(0, 65536));
+                delete txt;
+                delete bufg;
               }
-              break;              
+            }
+          }
+          break;                     
    case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'tupai':
                 try {
                 let set
