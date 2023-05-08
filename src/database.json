@@ -23265,6 +23265,16 @@
       "exp": 0,
       "level": 0,
       "autolevelup": true
+    },
+    "6281272539544@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Virgo",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
     }
   },
   "pasangan": {},
@@ -26169,7 +26179,8 @@
     "120363029382463134@g.us": {
       "antivionce": false,
       "antilink": false,
-      "maintenance": false
+      "maintenance": false,
+      "welcome": false
     }
   },
   "game": {}
