@@ -1394,7 +1394,8 @@ case 'update': {
     await exec('git add .')
     await exec('git commit -m "Apdet:v"')
     const { stdout } = await exec('git push')
-    m.reply(util.format('Successfully added\n'+stdout))
+    console.log(stdout)
+    m.reply(stdout.message)
   } catch (e) {
     console.error(e)
     m.reply(util.format(e))
