@@ -373,24 +373,7 @@ obj[name+' : '+(obj[name] ? ' Reversed' : '')] = content;
 }
 return obj;
 }
-switch(command) {  
-  case 'clearall':
-    if (!isOwner && !m.fromMe) return m.reply(mess.botOwner);
-    const chatsToDelete = [
-      ...(await store.chats.all()).filter(v => v.id.endsWith('.net')).map(v => v.id),
-      ...(await store.chats.all()).filter(v => v.id.endsWith('@g.us')).map(v => v.id)
-    ];
-    if (chatsToDelete.length === 0) {
-      return m.reply('Tidak ada chat yang bisa dihapus.');
-    }
-    await Resta.chatModify(
-      { delete: { message: { id: chatsToDelete, fromMe: true } } },
-      m.chat,
-      []
-    )
-    .then((res) => m.reply(jsonformat(res)))
-    .catch((err) => m.reply(jsonformat(err)))
-    break;  
+switch(command) {    
 case 'translate':
   case 'tr': {
     const { translate } = require('@vitalets/google-translate-api');
@@ -1880,7 +1863,7 @@ case 'bc': case 'broadcast': case 'bcall': {
               throw new Error(`Content-Length: ${res.headers.get('content-length')}`);
             }
             if (!/text|json/.test(res.headers.get('content-type'))) {
-              Resta.sendFile(m.chat, bufg, text, text, m);
+              await Resta.sendFile(m.chat, bufg, text, text, m);
             } else {
               let txt = await res.text();
               try {
@@ -1889,8 +1872,6 @@ case 'bc': case 'broadcast': case 'bcall': {
                 txt += '';
               } finally {
                 m.reply(txt.slice(0, 65536));
-                delete txt;
-                delete bufg;
               }
             }
           }
@@ -1993,6 +1974,13 @@ case 'mgz':
   }
 }
 break;
+case 'reset':
+case 'restart':{
+  if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
+  await m.reply('Sedang Merestart Bot...\nMohon tunggu sekitar 1 menit')
+  process.send('reset')
+}
+break
    case 'menu':
    case 'help': {
    	try {

@@ -21455,8 +21455,8 @@
       "exp": 0
     },
     "6283845946581@s.whatsapp.net": {
-      "afkTime": 1683456826820,
-      "afkReason": "diam 403020191",
+      "afkTime": -1,
+      "afkReason": "",
       "pasangan": "",
       "registered": true,
       "name": "27",
@@ -21800,10 +21800,10 @@
       "afkTime": -1,
       "afkReason": "",
       "pasangan": "",
-      "registered": false,
-      "name": "watimmm",
-      "age": -1,
-      "regTime": -1,
+      "registered": true,
+      "name": "p",
+      "age": 19,
+      "regTime": 1683597184921,
       "exp": 0,
       "level": 0,
       "autolevelup": true
@@ -23216,7 +23216,9 @@
       "name": "Nuyy Inay",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6281514342715@s.whatsapp.net": {
       "afkTime": -1,
@@ -23499,6 +23501,40 @@
       "age": -1,
       "regTime": -1,
       "exp": 0
+    },
+    "6281916225957@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Exycvwandax🤡🫶",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "628999409694@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Sαα",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "628884344957@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Taufiq",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     }
   },
   "pasangan": {},
@@ -26423,6 +26459,16 @@
       "antilink": false,
       "maintenance": false,
       "welcome": false
+    },
+    "6281514342715@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false
+    },
+    "628884344957@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false
     }
   },
   "game": {}
