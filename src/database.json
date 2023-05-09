@@ -23581,6 +23581,16 @@
       "age": -1,
       "regTime": -1,
       "exp": 0
+    },
+    "6285249144757@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Lia",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
     }
   },
   "pasangan": {},
@@ -26515,6 +26525,12 @@
       "antivionce": false,
       "antilink": false,
       "maintenance": false
+    },
+    "6288223603433@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
     }
   },
   "game": {}
