@@ -18149,8 +18149,8 @@
       "autolevelup": true
     },
     "6282210261513@s.whatsapp.net": {
-      "afkTime": -1,
-      "afkReason": "",
+      "afkTime": 1683628432748,
+      "afkReason": "cape",
       "pasangan": "",
       "registered": true,
       "name": "night",
@@ -23568,6 +23568,16 @@
       "pasangan": "",
       "registered": false,
       "name": "Ivan Sasongko",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281367692322@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Ace Ukiyo",
       "age": -1,
       "regTime": -1,
       "exp": 0

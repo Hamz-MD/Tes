@@ -112,7 +112,7 @@ if (global.db) setInterval(async () => {
   auth: state,
 });
         console.clear()
-	    console.log(color(figlet.textSync('Ilham - MD', {
+	    console.log(mylog(figlet.textSync('Ilham - MD', {
 		font: 'Big',
 		horizontalLayout: 'default',
 		verticalLayout: 'default',
@@ -693,15 +693,7 @@ if (global.db) setInterval(async () => {
         return buffer
     }
 
-    
-    /**
-     * 
-     * @param {*} jid 
-     * @param {*} path 
-     * @param {*} quoted 
-     * @param {*} options 
-     * @returns 
-     */
+  
     Resta.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,`[1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer

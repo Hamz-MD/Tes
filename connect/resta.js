@@ -16,6 +16,7 @@ const util = require('util')
 const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
 const path = require('path')
+const mathjs = require('mathjs')
 const cheerio = require('cheerio')
 const PhoneNumber = require('awesome-phonenumber')
 const os = require('os')
@@ -285,14 +286,11 @@ const downloadMp4 = async (link) => {
         })
     })
     const videoFile = await videoPromise
-    const yts = require("yt-search")
-		const search = await yts(link)
-		const anu = search.videos[Math.floor(Math.random() * search.videos.length)]
-    await Resta.sendMessage(m.chat, { document: videoFile, mimetype: 'video/mp4', caption: `Sukses...\nDont forget to donate`, fileName: anu.title, contextInfo: {
+    await Resta.sendMessage(m.chat, { document: videoFile, mimetype: 'video/mp4', caption: link, fileName: link, contextInfo: {
       externalAdReply: {
           title: 'Success, dont forget to donate',
           body: "",
-          thumbnailUrl: anu.thumbnail,
+          thumbnailUrl: erorurl,
           sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
           mediaType: 1,
           showAdAttribution: true,
@@ -335,14 +333,11 @@ const downloadMp3 = async (link) => {
       audioStream.pipe(writeStream)
     })
     const audioFile = await audioPromise
-    const yts = require("yt-search")
-		const search = await yts(link)
-		const anu = search.videos[Math.floor(Math.random() * search.videos.length)]
     await Resta.sendMessage(m.chat, { audio: audioFile, mimetype: 'audio/mpeg', contextInfo: {
       externalAdReply: {
-          title: anu.title,
+          title: `Suksess\nDont forget to donate`,
           body: "",
-          thumbnailUrl: anu.thumbnail,
+          thumbnailUrl: erorurl,
           sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
           mediaType: 1,
           showAdAttribution: true,
@@ -373,7 +368,24 @@ obj[name+' : '+(obj[name] ? ' Reversed' : '')] = content;
 }
 return obj;
 }
-switch(command) {    
+switch(command) { 
+  case 'kalkulator':
+    case 'calc':
+    case 'calculator':
+    case 'kal':{
+      if (args.length < 1) return m.reply(`*Contoh :*\n${prefix}kalkulator 2 * 5\n\n*Daftar Operator :*\n•> Kali : *\n•> Bagi : /\n•> Tambah : +\n•> Kurang : -`)
+      const equation = args.join(" ")
+      try {
+        const result = mathjs.evaluate(equation.replace(/×/g, "*").replace(/x/g, "*").replace(/÷/g, "/"))
+        if (isNaN(result)) {
+        } else {
+          m.reply(`\`\`\`「 Kalkulator 」\`\`\`\n\n*•> Hitung :* ${equation}\n*•> Hasil :* ${result}`)
+        }
+      } catch (err) {
+        m.reply(util.format(err))
+      }
+    }
+      break       
 case 'translate':
   case 'tr': {
     const { translate } = require('@vitalets/google-translate-api');
@@ -1974,13 +1986,30 @@ case 'mgz':
   }
 }
 break;
-case 'reset':
-case 'restart':{
-  if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
-  await m.reply('Sedang Merestart Bot...\nMohon tunggu sekitar 1 menit')
-  process.send('reset')
+case 'enc':
+case 'encrypt':{
+  const JavaScriptObfuscator = require('javascript-obfuscator')
+  if (!text) throw `[!] Masukan textnya`
+  let res = JavaScriptObfuscator.obfuscate(text)
+  await Resta.sendText(m.chat, res.getObfuscatedCode(), m)
 }
 break
+case 'reset':
+  case 'restart':{
+    if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner);
+    const { spawn } = require('child_process')
+    function restartBot() {
+      const child = spawn(process.argv[0], process.argv.slice(1), {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      process.exit();
+    }
+    await m.reply('Sedang Merestart Bot...\nMohon tunggu sekitar 1 menit');
+    setTimeout(restartBot, 1000);
+  }
+    break; 
    case 'menu':
    case 'help': {
    	try {
@@ -2049,6 +2078,10 @@ ${readmore}
 ┌──⭓ *OTHERS MENU* ${srl}
 │
 │${ctc} ${prefix}styletext ${query}
+│${ctc} ${prefix}encrypt ${text}
+│${ctc} ${prefix}enc ${text}
+│${ctc} ${prefix}kalkulator _5*6_
+│${ctc} ${prefix}calc _5*6_
 │${ctc} ${prefix}ppcp
 │${ctc} ${prefix}ppcouple
 │${ctc} ${prefix}wangy ${query}
@@ -3882,6 +3915,7 @@ if (!args[0]) {
                  }
                  }
                  break
+case 'lyric':
 case 'lirik': {
 var tesk = text ? text : m.quoted && m.quoted.text ? m.quoted.text : ''
 	if (!tesk) return m.reply(`Use example ${command} hallo`)
@@ -4321,7 +4355,6 @@ break
       case 'sticker': case 's': case 'stickergif': case 'sgif': {
                  //if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
                  if (!quoted) throw `*Balas Video/Image Dengan Caption* ${prefix + command}`
-            m.reply(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await Resta.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
@@ -4333,6 +4366,7 @@ break
                 await fs.unlinkSync(encmedia)
             } else {
                 throw m.reply(`*Kirim Gambar/Video Dengan Caption* ${prefix + command}\nDurasi *Video 1-9 Detik*`)
+                m.reply(mess.wait)
                 }
                  }
                  break
@@ -4352,7 +4386,7 @@ break
                 let encmedia = await Resta.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
                 fs.unlinkSync(encmedia)
                 } else if (/video/.test(mime)) {
-                if ((quoted.msg || quoted).seconds > 11) return m.reply('Maksimal 10 detik!')
+                if ((quoted.msg || quoted).seconds > 15) return m.reply('Maksimal 15 detik!')
                 let media = await quoted.download()
                 let encmedia = await Resta.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
                 fs.unlinkSync(encmedia)
@@ -4448,7 +4482,7 @@ Resta.sendImageAsSticker(m.chat, `https://telegra.ph/file/0c3184d777d56bfe77dab.
 }*/
 } catch (err) { 
 console.log(err)
-m.reply('Error:'+ util.format(err))
+m.reply(util.format(err))
 
 }
 }
