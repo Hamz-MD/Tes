@@ -12,6 +12,7 @@ const FileType = require('file-type')
 const path = require('path')
 const moment = require("moment-timezone")
 const _ = require('lodash')
+const dcanvas = require("discord-canvas")
 const axios = require('axios')
 const { infolog, mylog, color, bgcolor } = require('./lib/color')
 const PhoneNumber = require('awesome-phonenumber')
@@ -194,21 +195,35 @@ if (global.db) setInterval(async () => {
             let participants = anu.participants
             for (let num of participants) {
                 welcome = `Thanks @${num.split("@")[0]} for joining into ${metadata.subject} group.\n\n${metadata.desc}`
-                bye = `𝗚𝗼𝗼𝗱𝗯𝘆𝗲 👋 @${num.split("@")[0]} 𝗟𝗲𝗳𝘁 from ${metadata.subject} group.`
+                bye = `𝗚𝗼𝗼𝗱𝗯𝘆𝗲 @${num.split("@")[0]} 👋`
                 // Get Profile Picture User
                 try {
-                    ppgc = await Resta.profilePictureUrl(anu.id, 'image')
+                    ppuser = await Resta.profilePictureUrl(num, 'image')
                 } catch {
-                    ppgc = 'https://telegra.ph/file/76827b39d82b28877fb57.jpg'
+                    ppuser = 'https://telegra.ph/file/76827b39d82b28877fb57.jpg'
                 }
 
                 if (anu.action == 'add') {
-                Resta.sendMessage(anu.id, { text: `${welcome}`, contextInfo: {
+                    const image = await new dcanvas.Welcome()
+                    .setUsername(await Resta.getName(num) || "Undepined:v")
+                    .setDiscriminator(db.data.users[num].age)
+                    .setMemberCount(metadata.participants.length)
+                    .setGuildName(metadata.subject)
+                    .setAvatar(ppuser)
+                    .setColor("border", "#8015EA")
+                    .setColor("username-box", "#8015EA")
+                    .setColor("discriminator-box", "#8015EA")
+                    .setColor("message-box", "#8015EA")
+                    .setColor("title", "#8015EA")
+                    .setColor("avatar", "#8015EA")
+                    .setBackground(await pickRandom(mylogo))
+                    .toAttachment()
+                Resta.sendMessage(anu.id, { image: image.toBuffer(), caption:`${welcome}`, contextInfo: {
 				mentionedJid: [num],
                 externalAdReply: {
                     title: `Welcome to ${metadata.subject}`,
                     body: "",
-                    thumbnailUrl: ppgc,
+                    thumbnailUrl: 'https://telegra.ph/file/76827b39d82b28877fb57.jpg',
                     sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
                     mediaType: 1,
                     showAdAttribution: true,
@@ -216,12 +231,26 @@ if (global.db) setInterval(async () => {
                 }
             } })
                 } else if (anu.action == 'remove') {
-                    Resta.sendMessage(anu.id, { text: `${bye}`, contextInfo: {
+                    const image = await new dcanvas.Goodbye()
+                    .setUsername(await Resta.getName(num) || "Undepined:v")
+                    .setDiscriminator(db.data.users[num].age)
+                    .setMemberCount(metadata.participants.length)
+                    .setGuildName(metadata.subject)
+                    .setAvatar(ppuser)
+                    .setColor("border", "#8015EA")
+                    .setColor("username-box", "#8015EA")
+                    .setColor("discriminator-box", "#8015EA")
+                    .setColor("message-box", "#8015EA")
+                    .setColor("title", "#8015EA")
+                    .setColor("avatar", "#8015EA")
+                    .setBackground(await pickRandom(mylogo))
+                    .toAttachment()
+                    Resta.sendMessage(anu.id, { image: image.toBuffer(), caption: `${bye}`, contextInfo: {
 				mentionedJid: [num],
                 externalAdReply: {
                     title: `Left from ${metadata.subject}`,
                     body: "",
-                    thumbnailUrl: ppgc,
+                    thumbnailUrl: 'https://telegra.ph/file/76827b39d82b28877fb57.jpg',
                     sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
                     mediaType: 1,
                     showAdAttribution: true,
@@ -234,7 +263,7 @@ if (global.db) setInterval(async () => {
                 externalAdReply: {
                     title: `Yey, Promote From ${metadata.subject}`,
                     body: "",
-                    thumbnailUrl: ppgc,
+                    thumbnailUrl: ppuser,
                     sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
                     mediaType: 1,
                     showAdAttribution: true,
