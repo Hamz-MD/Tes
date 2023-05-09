@@ -19034,7 +19034,9 @@
       "name": "P",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6285257904085@s.whatsapp.net": {
       "afkTime": -1,
@@ -23535,6 +23537,40 @@
       "exp": 0,
       "level": 0,
       "autolevelup": true
+    },
+    "6289528879986@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "rzky",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6288223603433@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281326855801@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Ivan Sasongko",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
     }
   },
   "pasangan": {},
