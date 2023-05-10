@@ -18149,8 +18149,8 @@
       "autolevelup": true
     },
     "6282210261513@s.whatsapp.net": {
-      "afkTime": 1683628432748,
-      "afkReason": "cape",
+      "afkTime": -1,
+      "afkReason": "",
       "pasangan": "",
       "registered": true,
       "name": "night",
@@ -18471,8 +18471,8 @@
       "exp": 0
     },
     "6287819654911@s.whatsapp.net": {
-      "afkTime": -1,
-      "afkReason": "",
+      "afkTime": 1683718189761,
+      "afkReason": "mangan bakso khas ngawi 😋🍆",
       "pasangan": "",
       "registered": true,
       "name": "bilek",
@@ -21566,10 +21566,10 @@
       "afkTime": -1,
       "afkReason": "",
       "pasangan": "",
-      "registered": false,
-      "name": ".",
-      "age": -1,
-      "regTime": -1,
+      "registered": true,
+      "name": "Ariel",
+      "age": 23,
+      "regTime": 1683723409512,
       "exp": 0,
       "level": 0,
       "autolevelup": true
@@ -23591,6 +23591,28 @@
       "age": -1,
       "regTime": -1,
       "exp": 0
+    },
+    "6282169452862@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Raja",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281253323469@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Shiro Kun",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     }
   },
   "pasangan": {},

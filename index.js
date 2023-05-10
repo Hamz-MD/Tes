@@ -206,7 +206,7 @@ if (global.db) setInterval(async () => {
                 if (anu.action == 'add') {
                     const image = await new dcanvas.Welcome()
                     .setUsername(await Resta.getName(num) || "Undepined:v")
-                    .setDiscriminator(db.data.users[num].age)
+                    .setDiscriminator(metadata.size)
                     .setMemberCount(metadata.participants.length)
                     .setGuildName(metadata.subject)
                     .setAvatar(ppuser)
@@ -233,7 +233,7 @@ if (global.db) setInterval(async () => {
                 } else if (anu.action == 'remove') {
                     const image = await new dcanvas.Goodbye()
                     .setUsername(await Resta.getName(num) || "Undepined:v")
-                    .setDiscriminator(db.data.users[num].age)
+                    .setDiscriminator(metadata.size)
                     .setMemberCount(metadata.participants.length)
                     .setGuildName(metadata.subject)
                     .setAvatar(ppuser)
@@ -478,26 +478,34 @@ if (global.db) setInterval(async () => {
       * @param {*} options
       */
      Resta.sendFileUrl = async (jid, url, caption, quoted, options = {}) => {
-      let mime = '';
-      let res = await axios.head(url)
-      mime = res.headers['content-type']
-      if (mime.split("/")[1] === "gif") {
-     return Resta.sendMessage(jid, { video: await getBuffer(url), caption: caption, gifPlayback: true, ...options}, { quoted: quoted, ...options})
-      }
-      let type = mime.split("/")[0]+"Message"
-      if(mime === "application/pdf"){
-     return Resta.sendMessage(jid, { document: await getBuffer(url), mimetype: 'application/pdf', caption: caption, ...options}, { quoted: quoted, ...options })
-      }
-      if(mime.split("/")[0] === "image"){
-     return Resta.sendMessage(jid, { image: await getBuffer(url), caption: caption, ...options}, { quoted: quoted, ...options})
-      }
-      if(mime.split("/")[0] === "video"){
-     return Resta.sendMessage(jid, { video: await getBuffer(url), caption: caption, mimetype: 'video/mp4', ...options}, { quoted: quoted, ...options })
-      }
-      if(mime.split("/")[0] === "audio"){
-     return Resta.sendMessage(jid, { audio: await getBuffer(url), caption: caption, mimetype: 'audio/mpeg', ...options}, { quoted: quoted, ...options })
-      }
-      }
+    try {
+        let mime = '';
+        let res = await axios.head(url)
+        mime = res.headers['content-type']
+        if (mime.split("/")[0] === "image") {
+            return Resta.sendMessage(jid, { image: await getBuffer(url), caption: caption, ...options }, { quoted: quoted, ...options })
+        }
+        else if (mime.split("/")[0] === "video") {
+            return Resta.sendMessage(jid, { video: await getBuffer(url), caption: caption, mimetype: 'video/mp4', ...options }, { quoted: quoted, ...options })
+        }
+        else if (mime.split("/")[0] === "audio") {
+            return Resta.sendMessage(jid, { audio: { url: url }, caption: caption, mimetype: 'audio/mpeg', ...options }, { quoted: quoted, ...options })
+        }
+        else if (mime === "application/pdf") {
+            return Resta.sendMessage(jid, { document: await getBuffer(url), mimetype: 'application/pdf', filename: `${Date.now()}.pdf`, caption: caption, ...options }, { quoted: quoted, ...options })
+        }
+        else if (mime.split("/")[1] === "gif") {
+            return Resta.sendMessage(jid, { video: await getBuffer(url), caption: caption, gifPlayback: true, ...options }, { quoted: quoted, ...options })
+        }
+        else {
+            return Resta.sendMessage(jid, { url: url }, { quoted: quoted, ...options })
+        }
+    }
+    catch (err) {
+        console.error(err)
+        return false
+    }
+}
 
     /** Send List Messaage
       *

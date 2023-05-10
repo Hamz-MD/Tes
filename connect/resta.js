@@ -15,6 +15,8 @@ const moment = require('moment-timezone')
 const util = require('util')
 const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
+const ikeh = require("ikyy")
+const iky = new ikeh()
 const path = require('path')
 const mathjs = require('mathjs')
 const cheerio = require('cheerio')
@@ -32,7 +34,8 @@ const acr = new acrcloud({ host: "identify-ap-southeast-1.acrcloud.com", access_
 const yts = require('yt-search')
 const ytdl = require('ytdl-core')
 const hxz = require('hxz-api');
-const {  kompas, latinToAksara, aksaraToLatin, jadwalsholat, tiktokdl, tiktokdlv3, tiktokdlv2, instagramdl, instagramdlv2, instagramdlv3, instagramdlv4, facebookdl, facebookdlv2, lyrics, lyricsv2, youtubedl, youtubedlv2, youtubeSearch } = require('@bochilteam/scraper')
+const {  snapsave } = require('@bochilteam/scraper')
+const instagramGetUrl = require('instagram-url-direct')
 const simple = require('../lib/myfunc')
 const { mediafireDl } = require('../lib/mediafire')
 const textpro = require('../lib/textpro')
@@ -427,29 +430,62 @@ case 'translate':
   case 'twdl':
  case 'twitter':
  case 'twitterdl':{
-	 if (!args[0]) {
-      throw m.reply(`Masukkan URL!\n\ncontoh:\n${command} https://twitter.com/faqeeyaaz/status/1242789155173617664?s=20&t=DRgdl9U8MwTwpY0o1o-96g`);
-    }
+	 const cheerio = require('cheerio')
+	 const FormData = require('form-data')
+	 async function twitter(url) {
+  if (!/http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/i) throw 'Link invalid!'
+  let form = new FormData()
+  form.append('url', encodeURI(url))
+  form.append('submit', '')
+  let res = await fetch('https://www.expertsphp.com/instagram-reels-downloader.php', {
+    method: 'POST',
+    headers: {
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+      'cookie': '_ga=GA1.2.783835709.1637038175; _gid=GA1.2.880188214.1637038175; __gads=ID=5b4991618655cd86-22e2c7aeadce00ae:T=1637038176:RT=1637038176:S=ALNI_MaCe3McPrVVswzBEqcQlgnVZXtZ1g',
+      'origin': 'https://www.expertsphp.com',
+      'referer': 'https://www.expertsphp.com/twitter-video-downloader.html',
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+      ...form.getHeaders()
+    },
+    body: form
+  })
+  let html = await res.text()
+  const $ = cheerio.load(html)
+  let thumbnail = $('#showdata > img').attr('src')
+  let result = []
+  $('#showdata > div > table > tbody > tr').each(function () {
+    result.push({
+      link: $(this).find('td:nth-child(1) > a').attr('href'),
+      mime: $(this).find('td:nth-child(2) > strong').text()
+    })
+  })
+  let name = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/g
+  name = [...url.matchAll(name)][0][1]
+  return {
+    name,
+    thumbnail,
+    result
+  }
+}
+if (!args[0]) throw `Gunakan format: ${command} https://twitter.com/gofoodindonesia/status/1229369819511709697`
+  let res = await twitter(args[0])
+  let result = res.result.reverse().filter(({ mime }) => /video/i.test(mime)), video, index
+  for (let vid of result) {
     try {
-      m.reply(mess.wait);
-      const response = await fetch(lannn+'/api/download/twitter?url='+args[0]+'&apikey='+lannkey);
-      if (!response.ok) {
-        throw await response.text();
-      }
-      const result = await response.json();
-      if (!result.status) {
-        throw result;
-      }
-      const { HD, desc, SD } = result.result;
-      const fileToSend = HD || SD 
-      if (!fileToSend) {
-        throw m.reply('Tidak dapat menemukan file video Twitter.');
-      }
-      await Resta.sendMessage(m.chat, { document: {url:fileToSend}, mimetype: 'video/mp4', caption: `Description: ${desc}`, fileName: command+'.mp4'},{quoted:m})
-    } catch (err) {
-      console.error(err);
-      m.reply(util.format(err));
+      video = await (await fetch(vid.link)).buffer()
+      index = result.indexOf(vid)
+      break
+    } catch (e) {
+      err = e
+      continue
     }
+  }
+  if (!video) throw 'Can\'t get video/image'
+  let ress = result[index]
+  Resta.sendFile(m.chat, video, 'twitter' + /video/.test(ress.mime) ? '.mp4' : '.png', `
+*Name:* ${res.name}
+*Mime:* ${ress.mime}
+`.trim(), m)
  }
  break
   case 'tomp4': case 'tovideo': case 'tovid': {
@@ -490,23 +526,6 @@ case 'translate':
      await Resta.sendMessage('6281233649676@s.whatsapp.net', {document: fs.readFileSync('./src/database.json'), mimetype: 'application/octet-stream', fileName: `database.json`}, {quoted:m})  
   }
     break
-case 'jadwalsholat': {
-if (!text) throw m.reply(`Use example ${command} semarang`)
-    const res = await jadwalsholat(text)
-    m.reply(`
-*Jadwal Sholat ${text}*
-${Object.entries(res.today).map(([name, data]) => `Sholat ${name}: ${data}`).join('\n').trim()}
-`.trim())
-}
-break
-case 'q': case 'quoted': {
-  m.reply(mess.wait)
-  if (!m.quoted) return m.reply('Reply Pesannya!!')
-  let wokwol = await Resta.serializeM(await m.getQuotedObj())
-  if (!wokwol.quoted) return m.reply('Pesan Yang anda reply tidak mengandung reply')
-  await wokwol.quoted.copyNForward(m.chat, true)
-  }
-  break
 case 'gdrive': {
   async function GDriveDl(url) {
     try {
@@ -1478,17 +1497,6 @@ ${cpuCoresUsage}
   }}, { quoted: m });
 }
 break;
-case 'renz':
-  const startTime = Date.now();
-  Promise.all([
-    Resta.sendMessage(m.chat, { text: 'Pinging...'}),
-    new Promise(resolve => setTimeout(resolve, 500)) // menunggu setengah detik
-  ]).then(([message]) => {
-    const endTime = Date.now();
-    Resta.sendMessage(m.chat, { text :`Pong!\nLatency: ${(endTime - startTime)}ms` }, {quoted:m});
-  });
-  break;
-
 // WEBZONE API //
 case 'gsmarena':
 case 'gsm':
@@ -1727,86 +1735,84 @@ const result = pickRandom(tikel)
 }
 break
 case 'banned':{
-	if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
-	if (!args[0]) {
-		return m.reply("No number");
-	}
-	// replace no numeric
-	let text = args[0].replace(/[^0-9]/g, "");
-	// Statement if number not INDONESIA number
-	if (!(text.startsWith("08") || text.startsWith("62"))) {
-		return m.reply("Only INDONESIA number!");
-	}
+  if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner);
+  if (!args[0]) {
+    return m.reply("No number");
+  }
+  // replace no numeric
+  let text = args[0].replace(/[^0-9]/g, "");
+  // Statement if number not INDONESIA number
+  if (!(text.startsWith("08") || text.startsWith("62"))) {
+    return m.reply("Only INDONESIA number!");
+  }
 
-	text = text.startsWith("08") ? text.replace("08", "62") : text;
-	if (text + "@s.whatsapp.net" === Resta.user.jid) {
-		return m.reply("Is that bot number ?");
-	}
+  text = text.startsWith("08") ? text.replace("08", "62") : text;
+  if (text + "@s.whatsapp.net" === Resta.user.jid) {
+    return m.reply("Is that bot number?");
+  }
 
-	// check number is on whatsapp
-	const isValid = await Resta.onWhatsApp(text + "@s.whatsapp.net");
-	if (isValid.length == 0) {
-		return m.reply("Number not in whatsapp!");
-	}
+  // check number is on whatsapp
+  const isValid = await Resta.onWhatsApp(text + "@s.whatsapp.net");
+  if (!isValid) {
+    return m.reply("Number not on WhatsApp!");
+  }
 
-	// text = text.startsWith("62") ? text.replace("62", "") : text;
-	text = text.trim();
+  text = text.startsWith("62") ? text.replace("62", "") : text;
+  text = text.trim();
 
-	try {
-		const data = await axios.get("https://www.whatsapp.com/contact/noclient/");
-		const email = await axios.get(
-			"https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1"
-		);
-		const cookie = data.headers["set-cookie"].join("; ");
-		const $ = cheerio.load(data.data);
-		const $form = $("form");
-		const url = new URL($form.attr("action"), "https://www.whatsapp.com").href;
-		let form = new URLSearchParams();
-		form.append("jazoest", $form.find("input[name=jazoest]").val());
-		form.append("lsd", $form.find("input[name=lsd]").val());
-		form.append("step", "submit");
-		form.append("country_selector", "INDONESIA");
+  try {
+    const data = await axios.get("https://www.whatsapp.com/contact/noclient/");
+    const email = await axios.get("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1");
+    const cookie = data.headers["set-cookie"].join("; ");
+    const $ = cheerio.load(data.data);
+    const $form = $("form");
+    const url = new URL($form.attr("action"), "https://www.whatsapp.com").href;
+    let form = new URLSearchParams();
+    form.append("jazoest", $form.find("input[name=jazoest]").val());
+    form.append("lsd", $form.find("input[name=lsd]").val());
+    form.append("step", "submit");
+    form.append("country_selector", "INDONESIA");
 
-		/** @warning
-		 * + means it should starts with country code, eg. +62 Xx
-		 * miss understanding ?
-		 */
-		text = PhoneNumber("+" + text).getNumber("international");
-		form.append("phone_number", `${text}`);
-		/** */
+    /** @warning
+     * + means it should start with the country code, e.g., +62 Xx
+     * misunderstanding?
+     */
+    text = PhoneNumber("+" + text).getNumber("international");
+    form.append("phone_number", `${text}`);
+    /** */
 
-		form.append("email", email.data[0]);
-		form.append("email_confirm", email.data[0]);
-		form.append("platform", "ANDROID");
-		form.append("your_message", "Perdido/roubado: desative minha conta");
-		form.append("__user", "0");
-		form.append("__a", "1");
-		form.append("__csr", "");
-		form.append("__req", "8");
-		form.append("__hs", "19316.BP:whatsapp_www_pkg.2.0.0.0.0");
-		form.append("dpr", "1");
-		form.append("__ccg", "UNKNOWN");
-		form.append("__rev", "1006630858");
-		form.append("__comment_req", "0");
+    form.append("email", email.data[0]);
+    form.append("email_confirm", email.data[0]);
+    form.append("platform", "ANDROID");
+    form.append("your_message", "Perdido/roubado: desative minha conta");
+    form.append("__user", "0");
+    form.append("__a", "1");
+    form.append("__csr", "");
+    form.append("__req", "8");
+    form.append("__hs", "19316.BP:whatsapp_www_pkg.2.0.0.0.0");
+    form.append("dpr", "1");
+    form.append("__ccg", "UNKNOWN");
+    form.append("__rev", "1006630858");
+    form.append("__comment_req", "0");
 
-		const res = await axios({
-			url,
-			method: "POST",
-			data: form,
-			headers: {
-				cookie,
-			},
-		});
-		const payload = String(res.data);
+    const res = await axios({
+      url,
+      method: "POST",
+      data: form,
+      headers: {
+        cookie,
+      },
+    });
+    const payload = String(res.data);
 
-		if (payload.includes(`"payload":true`)) {
-			m.reply(util.format(payload));
-		} else if (payload.includes(`"payload":false`)) {
-			m.reply(util.format(payload));
-		} else m.reply(await import("utils").format(res.data));
-	} catch (err) {
-		m.reply(util.format(err));
-	}
+    if (payload.includes(`"payload":true`)) {
+      m.reply(`Sukses`);
+    } else if (payload.includes(`"payload":false`)) {
+      m.reply(`Tidak Worek:v`);
+    } else m.reply(await import("utils").format(res.data));
+  } catch (err) {
+    m.reply(util.format(err));
+  }
 }
 break
 //----------------//
@@ -1844,7 +1850,17 @@ case 'bc': case 'broadcast': case 'bcall': {
   for (let yoi of anu) {
   await sleep(1500)
   let txt = `*Broadcast ${Resta.user.name}*\n\n${text}`
-  Resta.sendText(yoi, txt)
+  Resta.sendMessage(yoi, {text: txt, contextInfo: {
+    externalAdReply: {
+      title: '',
+      body: '',
+      thumbnailUrl: 'https://telegra.ph/file/bc92d549717e62258f581.jpg',
+      sourceUrl: '',
+      mediaType: 1,
+      showAdAttribution: true,
+      renderLargerThumbnail: true
+    }
+  }})
   }
   m.reply('Sukses Broadcast')
   }
@@ -1949,20 +1965,6 @@ case 'bc': case 'broadcast': case 'bcall': {
               m.reply( l + readmore + r )
               }
               break
-			  case 'upload': {
-  const { Storage } = require('megajs');
-  const storage = await new Storage({
-    email: 'tendosweat@gmail.com',
-    password: 'Ilham@123',
-    keepalive: true,
-    userAgent: "Mozilla/5.0 (Linux; Android 10; RMX2020) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36"
-  }).ready;
-  const file = await storage.upload('KOntol.txt', 'Ngnetod').complete;
-  const link = file.link();
-  console.log('The file was uploaded!', file);
-  await m.reply(`File berhasil diupload ke Mega!\nLink: ${file}`);
-			  }
-  break;
 			  case 'megajs':
               case 'megadl':
 case 'mgz':
@@ -1987,23 +1989,7 @@ case 'encrypt':{
   let res = JavaScriptObfuscator.obfuscate(text)
   await Resta.sendText(m.chat, res.getObfuscatedCode(), m)
 }
-break
-case 'reset':
-  case 'restart':{
-    if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner);
-    const { spawn } = require('child_process')
-    function restartBot() {
-      const child = spawn(process.argv[0], process.argv.slice(1), {
-        detached: true,
-        stdio: 'ignore'
-      });
-      child.unref();
-      process.exit();
-    }
-    await m.reply('Sedang Merestart Bot...\nMohon tunggu sekitar 1 menit');
-    setTimeout(restartBot, 1000);
-  }
-    break; 
+break 
    case 'menu':
    case 'help': {
    	try {
@@ -2126,7 +2112,6 @@ ${readmore}
 │${ctc} ${prefix}asmaulhusna
 │${ctc} ${prefix}ayatkursi
 │${ctc} ${prefix}murothal ${query}
-│${ctc} ${prefix}jadwalsholat ${query}
 │
 └───────⭓
     
@@ -2444,6 +2429,7 @@ ${readmore}
 │${ctc} ${prefix}gdrive ${link}
 │${ctc} ${prefix}twitter ${link}
 │${ctc} ${prefix}mega ${link}
+│${ctc} ${prefix}megadl ${link}
 │
 └───────⭓
     
@@ -2630,16 +2616,6 @@ break
               user.afkTime = + new Date
               user.afkReason = text
               Resta.sendTextWithMentions(m.chat, `@${m.sender.split("@")[0]} Telah Afk${text ? ': ' + text : ''}`, m)
-              break
-    case 'listdm':
-              if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-              if (args[0] === "1") {
-              Resta.sendMessage(m.chat, { image: { url: 'https://telegra.ph/file/a4a564eee5b5b9f9b18db.jpg' }, caption: `Minat? Chat Owner`}, {quoted:m})
-              Resta.sendContact(m.chat, global.owner, m)
-              } else if (args[0] === "2") {
-              Resta.sendMessage(m.chat, { image: { url: 'https://telegra.ph/file/dbb0f988f88b33d1682d7.jpg' }, caption: `Minat? Chat Owner`}, {quoted:m}) 
-              Resta.sendContact(m.chat, global.owner, m)
-              }
               break
   case 'verif':
   case 'daftar':
@@ -3232,22 +3208,6 @@ break;
                await Resta.sendMessage(m.chat, { text: `Ketik ${command} enable/disable` },{quoted:m})
                }
                break
-    case 'welcomegroup':
-               if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-               if (!m.isGroup) return m.reply(mess.group)
-               if (!isAdmins) return m.reply(mess.admin)
-               if (args[0] === "enable") {
-               if (global.db.data.chats[m.chat].welcome) return m.reply(`Welcome Aktif Sebelumnya`)
-               global.db.data.chats[m.chat].welcome = true
-               m.reply(`Welcome Di Group Berhasil Di Aktifkan !`)
-               } else if (args[0] === "disable") {
-               if (!global.db.data.chats[m.chat].welcome) return m.reply(`Welcome Nonaktif Sebelumnya`)
-               global.db.data.chats[m.chat].welcome = false
-               m.reply(`Welcome Berhasil Di Nonaktifkan !`)
-               } else {
-               await Resta.sendMessage(m.chat, { text: `Ketik ${command} enable/disable` },{quoted:m})
-               }
-               break
 	case 'wangy': {
 		if (!text) throw m.reply(`Masukkan query!`)
               awikwok = `${text} ${text} ${text} ❤️ ❤️ ❤️ WANGY WANGY WANGY WANGY HU HA HU HA HU HA, aaaah baunya rambut ${text} wangyy aku mau nyiumin aroma wangynya ${text} AAAAAAAAH ~ Rambutnya.... aaah rambutnya juga pengen aku elus-elus ~~ AAAAAH ${text} keluar pertama kali di anime juga manis ❤️ ❤️ ❤️ banget AAAAAAAAH ${text} AAAAA LUCCUUUUUUUUUUUUUUU............ ${text} AAAAAAAAAAAAAAAAAAAAGH ❤️ ❤️ ❤️apa ? ${text} itu gak nyata ? Cuma HALU katamu ? nggak, ngak ngak ngak ngak NGAAAAAAAAK GUA GAK PERCAYA ITU DIA NYATA NGAAAAAAAAAAAAAAAAAK PEDULI BANGSAAAAAT !! GUA GAK PEDULI SAMA KENYATAAN POKOKNYA GAK PEDULI. ❤️ ❤️ ❤️ ${text} gw ... ${text} di laptop ngeliatin gw, ${text} .. kamu percaya sama aku ? aaaaaaaaaaah syukur ${text} aku gak mau merelakan ${text} aaaaaah ❤️ ❤️ ❤️ YEAAAAAAAAAAAH GUA MASIH PUNYA ${text} SENDIRI PUN NGGAK SAMA AAAAAAAAAAAAAAH`
@@ -3436,12 +3396,6 @@ break
                 if (!isAdmins) return m.reply(mess.admin)
                 Resta.sendMessage(m.chat, { text : q ? q : 'kosong' , mentions: participants.map(a => a.id)}) 
                 break
-	case 'otag': {
-		if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
-		if (!m.quoted) return m.reply(`Reply pesan dengan caption ${prefix + command}`)
-               Resta.sendMessage(m.chat, { forward: m.quoted.fakeObj, mentions: participants.map(a => a.id) })
-               }
-			   break
 //STALK//
      case 'igstalk':
                 if (!args || !args[0]) throw m.reply(`Gunakan format ${prefix}${command} [username] Contoh: ${prefix}${command} jokowi`)
@@ -3772,49 +3726,22 @@ case 'ytmp4':
   }
   break;    
    case 'ig':
-     case'igmp4':
-     case 'igvideo':
+case 'igmp4':
+case 'igvideo': {
   if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-  if (!q) return m.reply(`Use example ${command} https://www.instagram.com/p/CMeFrnTp8as`)
-  if (!isUrl(q)) throw m.reply(mess.link) 
-  if (!q.includes('instagram.com')) return m.reply(mess.link1)
-  m.reply(mess.wait)
-  try {
-    const a = await instagramdlv2(q)
-    await Resta.sendMessage(m.chat, {
-      video: {
-        url: a[0].url.split("snapsave.app")[1]
-      },
-      mimetype: "video/mp4",
-      caption: `Mode By ${namaBot}`
-    }, {
-      quoted: m
-    })
-  } catch (err) {
-    console.log(err)
-    await Resta.sendMessage(m.chat, {
-      image: {
-        url: global.erorurl
-      },
-      caption: String(err)
-    }, {
-      quoted: m
-    })
-  }
-  break
-     case 'igfoto':
-                if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-                if (!q) return m.reply(`Use example ${command} https://www.instagram.com/p/CMeFrnTp8as`)
-                if (!isUrl(q)) throw m.reply(mess.link) 
-		        if (!q.includes('instagram.com')) return m.reply(mess.link1)
-	            m.reply(mess.wait)
-                try {
-                a = await instagramdlv2(args[0])
-                await Resta.sendMessage(m.chat, {image: {url: a[0].url.split("snapsave.app")[1]}, caption: `By Mode ${namaBot}` }, { quoted: m })
-                } catch (err) {
-                console.log(err)
-                await Resta.sendMessage(m.chat, { image : { url:  global.erorurl }, caption: String(err)}, { quoted: m })
-                }
+  if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
+    const results = (await instagramGetUrl(args[0])).url_list[0]
+
+    Resta.sendMessage(m.chat, {video:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
+}
+break;
+     case 'igfoto':{
+  if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
+  if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
+    const results = (await instagramGetUrl(args[0])).url_list[0]
+
+    Resta.sendMessage(m.chat, {image:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
+}
                 break
       case 'fbdown':
  case 'fb':
@@ -3898,23 +3825,6 @@ if (!args[0]) {
                  }
                  }
                  break
-case 'lyric':
-case 'lirik': {
-var tesk = text ? text : m.quoted && m.quoted.text ? m.quoted.text : ''
-	if (!tesk) return m.reply(`Use example ${command} hallo`)
-		try {
-	var result = await lyrics(tesk)
-	m.reply(`
-Lyrics *${result.title}*
-Author ${result.author}
-${result.lyrics}
-Url ${result.link}
-`.trim())
-		} catch (err) {
-      m.reply(util.format(err))
-    }
-}
-break
        case 'cuaca': {
 if (!q) return m.reply(`_Contoh_\n${prefix+command} palembang`)
 let api_cuaca = '18d044eb8e1c06eaf7c5a27bb138694c'
@@ -3984,18 +3894,14 @@ case 'tt': {
 
 		const url = args[0]
 		if (!url)
-			throw new Error(`Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`)
+			throw `Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
 		if (!url.match(/tiktok/gi))
-			throw new Error(`Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`)
+			throw `Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
         m.reply(mess.wait)
-		const videoData = await tiktokdl(url).catch(async _ => await tiktokdlv2(url))
-		const { author: { nickname }, video, description } = videoData
-		const videoUrl = video.no_watermark || video.no_watermark_hd || video.with_watermark || video.no_watermark_raw
+await iky.downloader.tiktok(url).then(p => {
 
-		if (!videoUrl)
-			throw new Error('Gagal mengunduh video dari TikTok. Mohon coba lagi nanti.')
-
-		await Resta.sendMessage(from, {video:{url: videoUrl}, mimetype:"video/mp4", caption: `${nickname}`}, {quoted:m})
+		Resta.sendMessage(from, {video:{url: p.result.video.nowm.video_url}, mimetype:"video/mp4", caption: `*TIKTOK DOWNLOADER*\n\n- Author: ${p.author}\n- Author Name: ${p.author_name}\n- Desc: ${p.desc}`}, {quoted:m})
+})
 	} catch (err) {
 		if (err.message != 'Promise pending') {
 			m.reply(util.format(err))
@@ -4013,18 +3919,14 @@ break;
 
 		const url = args[0]
 		if (!url)
-			throw new Error(`Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`)
+			throw `Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
 		if (!url.match(/tiktok/gi))
-			throw new Error(`Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`)
+			throw `Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
         m.reply(mess.wait)
-		const videoData = await tiktokdl(url).catch(async _ => await tiktokdlv2(url))
-		const { author: { nickname }, video, description } = videoData
-		const videoUrl = video.no_watermark || video.no_watermark_hd || video.with_watermark || video.no_watermark_raw
+await iky.downloader.tiktok(url).then(p => {
 
-		if (!videoUrl)
-			throw new Error('Gagal mengunduh video dari TikTok. Mohon coba lagi nanti.')
-
-		await Resta.sendMessage(from, {document:{url: videoUrl}, mimetype:"audio/mpeg", caption: `${nickname}`, fileName: command+'.mp3'}, {quoted:m})
+		 Resta.sendMessage(from, {document:{url: p.result.audio.audio_url}, mimetype:"audio/mpeg", caption: `*TIKTOK DOWNLOADER*\n\n- Author: ${p.author}\n- Author Name: ${p.author_name}\n- Desc: ${p.desc}`, fileName: p.author+'.mp3'}, {quoted:m})
+})
 	} catch (err) {
 		if (err.message != 'Promise pending') {
 			m.reply(util.format(err))
@@ -4340,16 +4242,17 @@ break
                  if (!quoted) throw `*Balas Video/Image Dengan Caption* ${prefix + command}`
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
+				m.reply(mess.wait)
                 let encmedia = await Resta.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else if (/video/.test(mime)) {
                 if ((quoted.msg || quoted).seconds > 11) return m.reply('*Maksimal 10 detik!*')
                 let media = await quoted.download()
+			m.reply(mess.wait)
                 let encmedia = await Resta.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else {
                 throw m.reply(`*Kirim Gambar/Video Dengan Caption* ${prefix + command}\nDurasi *Video 1-9 Detik*`)
-                m.reply(mess.wait)
                 }
                  }
                  break
