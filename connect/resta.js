@@ -730,9 +730,7 @@ case 'ppcp':
     const index = Math.floor(Math.random() * data.length);
     const json = data[index];
     await Resta.sendMessage(m.chat, { image: { url: json.cewe }, caption: 'PP Cewenya' }, { quoted: m });
-    await Resta.sendMessage(m.chat, { image: { url: json.cowo }, caption: 'PP Cowonya', buttons: [
-                    {buttonId: `ppcp`, buttonText: {displayText: 'Next'}, type: 1}
-                ], footer: `Mau lagi? Klik "Next" dibawah!` }, { quoted: m });
+    await Resta.sendMessage(m.chat, { image: { url: json.cowo }, caption: 'PP Cowonya', footer: `Mau lagi? Klik "Next" dibawah!` }, { quoted: m });
   }
   break;
   case 'charnime':{
@@ -1049,16 +1047,11 @@ case 'gimage': {
         gis(args.join(" "), async (error, result) => {
         n = result
         images = n[Math.floor(Math.random() * n.length)]
-        let buttons = [
-                    {buttonId: `gimage ${text}`, buttonText: {displayText: 'Next Image'}, type: 1}
-                ]
                 let buttonMessage = {
                     image: { url: images.url },
                     caption: `*-------「 GIMAGE SEARCH 」-------*
  *Query* : ${text}
  *Media Url* : ${images.url}`,
-                    footer: `GIMAGE`,
-                    buttons: buttons,
                     headerType: 4
                 }
                 Resta.sendMessage(m.chat, buttonMessage, { quoted: m })
@@ -2034,11 +2027,7 @@ case 'reset':
     }
   }
 };
-    // send the message
-  const buttons = [
-    {buttonId: 'donasi', buttonText: {displayText: 'DONASI'}, type: 1},
-    {buttonId: 'snk', buttonText: {displayText: 'S&K'}, type: 1}
-  ];
+
   const contextInfo = {
     forwardingScore: 9999,
     isForwarded: false,
@@ -3495,9 +3484,6 @@ case 'whatmusic': {
       txt += `*• Release Date:* ${release_date}`
       await Resta.sendMessage(m.chat, {
       text: text.trim(),
-      buttons: [
-                    {buttonId: `play ${title}`, buttonText: {displayText: 'GetMusic'}, type: 1}
-                ], 
       footer: `Mau Dikirimkan Audionya, Klik Dibawah!!!`
     }, { quoted: m })
     } else {
@@ -3555,9 +3541,6 @@ await Resta.sendMessage(m.chat, {
             mimetype: 'audio/mpeg',
 			caption: 'Sukses...\nDont forget to donate :)',
 			fileName: anu.title+'.mp3',
-			buttons: [
-                    {buttonId: `ytmp4 ${anu.url}`, buttonText: {displayText: 'Klik, Get Video!!!'}, type: 1}
-		],
             contextInfo: {
                 externalAdReply: {
                     title: anu.title,
@@ -3636,7 +3619,6 @@ case 'pin':
                 anu = await pinterest(q)
                 result = anu[Math.floor(Math.random() * anu.length)]
                 let buttonspinterest = [{buttonId: `pinterest ${text}`, buttonText: {displayText: 'Next Result'}, type: 1}]
-                Resta.sendMessage(m.chat, { image: { url: result }, caption: 'Source Url : '+result, buttons: buttonspinterest }, { quoted: m })
                 Resta.sendMessage(m.chat, { image: { url: result }, caption: 'Source Url : '+result},{quoted:m})
              } catch (err){
               m.reply(util.format(err))
