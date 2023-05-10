@@ -13,7 +13,6 @@ Thumbs.db
 # Ignore build output
 /dist/
 /build/
-/session/
 
 # Ignore dependencies
 /node_modules/
