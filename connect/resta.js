@@ -2754,7 +2754,7 @@ case 'toanime': {
     try {
       const img = await Resta.downloadAndSaveMediaMessage(quoted)
       const out = await TelegraPh(img);
-      await Resta.sendMessage(m.chat, { image: { url: `https://sh.xznsenpai.xyz/api/toanime?url=${util.format(out)}` }, caption: `*Jadi Anime*` }, { quoted: m });
+      await Resta.sendMessage(m.chat, { image: { url: `https://xznsenpai.xyz/api/toanime?url=${util.format(out)}` }, caption: `*Jadi Anime*` }, { quoted: m });
       await fs.unlinkSync(img)
     } catch (e) {
       console.error(e);
@@ -3726,13 +3726,14 @@ case 'ytmp4':
   }
   break;    
    case 'ig':
+   case 'igdl':
 case 'igmp4':
 case 'igvideo': {
   if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
   if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
     const results = (await instagramGetUrl(args[0])).url_list[0]
 
-    Resta.sendMessage(m.chat, {video:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
+    await Resta.sendMessage(m.chat, {video:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
 }
 break;
      case 'igfoto':{
@@ -3740,7 +3741,7 @@ break;
   if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
     const results = (await instagramGetUrl(args[0])).url_list[0]
 
-    Resta.sendMessage(m.chat, {image:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
+    await Resta.sendMessage(m.chat, {image:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
 }
                 break
       case 'fbdown':
