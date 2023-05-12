@@ -113,7 +113,7 @@ if (global.db) setInterval(async () => {
   auth: state,
 });
         console.clear()
-	    console.log(mylog(figlet.textSync('Ilham - MD', {
+	    console.log(bgcolor(figlet.textSync('Ilham - MD', {
 		font: 'Big',
 		horizontalLayout: 'default',
 		verticalLayout: 'default',
@@ -276,7 +276,7 @@ if (global.db) setInterval(async () => {
                 externalAdReply: {
                     title: `Awokwokwok, Demote From ${metadata.subject}`,
                     body: "",
-                    thumbnailUrl: ppgc,
+                    thumbnailUrl: ppuser,
                     sourceUrl: 'https://chat.whatsapp.com/D7Tj6n26CE92PKs2CbhEu4',
                     mediaType: 1,
                     showAdAttribution: true,

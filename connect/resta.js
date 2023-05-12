@@ -13,6 +13,7 @@ const { fromBuffer } = require('file-type')
 const fs = require('fs')
 const moment = require('moment-timezone')
 const util = require('util')
+const needle = require("needle")
 const { Primbon } = require('scrape-primbon')
 const primbon = new Primbon()
 const ikeh = require("ikyy")
@@ -35,7 +36,6 @@ const yts = require('yt-search')
 const ytdl = require('ytdl-core')
 const hxz = require('hxz-api');
 const {  snapsave } = require('@bochilteam/scraper')
-const instagramGetUrl = require('instagram-url-direct')
 const simple = require('../lib/myfunc')
 const { mediafireDl } = require('../lib/mediafire')
 const textpro = require('../lib/textpro')
@@ -468,6 +468,7 @@ case 'translate':
   }
 }
 if (!args[0]) throw `Gunakan format: ${command} https://twitter.com/gofoodindonesia/status/1229369819511709697`
+m.reply(mess.wait)
   let res = await twitter(args[0])
   let result = res.result.reverse().filter(({ mime }) => /video/i.test(mime)), video, index
   for (let vid of result) {
@@ -526,6 +527,9 @@ if (!args[0]) throw `Gunakan format: ${command} https://twitter.com/gofoodindone
      await Resta.sendMessage('6281233649676@s.whatsapp.net', {document: fs.readFileSync('./src/database.json'), mimetype: 'application/octet-stream', fileName: `database.json`}, {quoted:m})  
   }
     break
+case 'googledrivedl':
+case 'googledrive':
+case 'gdrivedl':
 case 'gdrive': {
   async function GDriveDl(url) {
     try {
@@ -574,7 +578,7 @@ case 'gdrive': {
     if (!args[0]) return m.reply(`Input URL\n\nExample: ${command} https://drive.google.com/file/d/0B_WlBmfJ3KOfdlNyVWwzVzQ1QTQ/view?resourcekey=0-P3IayYTmxJ5d8vSlf-CpUA`);
     if (!args[0].match(/drive\.google/i)) return m.reply('Invalid URL');
     let res = await GDriveDl(args[0]);
-    await Resta.sendMessage(m.chat, { document: { url: res.downloadUrl }, fileName: res.fileName, mimetype: res.mimeType }, { quoted: m });
+    await Resta.sendFileUrl(m.chat, res.downloadUrl, res.fileName, m);
   } catch (err) {
     m.reply(err.message);
   }
@@ -605,19 +609,20 @@ case 'ayatkursi': {
 	m.reply(`*${kumsi.arabic}*\n\n- *Latin:* _${kumsi.latin}_\n\n- *Terjemahan:* _${kumsi.translation}_\n\n- *Tafsir:* ${kumsi.tafsir}`)
 }
 break
-case 'creategc': {//tq to ilham//
-if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
-if (!q) return m.reply(`Contoh :\n#creategc namagroup`)
-let cret = await Resta.groupCreate(args.join(" "), [])
-let respot = await Resta.groupInviteCode(cret.id)
-m.reply(`  「 Create Group 」
+case 'cgc':
+case 'creategc': {
+  if (!isOwner && !m.key.fromMe) return m.reply(mess.botOwner)
+  if (!q) return m.reply(`Contoh :\n#creategc namagroup`)
+  let group = await Resta.groupCreate(args.join(" "), [])
+  let inviteCode = await Resta.groupInviteCode(group.id)
+  await Resta.sendTextWithMentions(m.chat, `  「 Create Group 」
 
-▸ Name : ${cret.subject}
-▸ Owner : @${cret.owner.split("@")[0]}
-▸ Time : ${moment(cret.creation * 1000).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm:ss")} WIB
+▸ Name : ${group.subject}
+▸ Owner : @${group.owner.split("@")[0]}
+▸ Time : ${moment(group.creation * 1000).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm:ss")} WIB
 
-https://chat.whatsapp.com/${respot}
-`)
+https://chat.whatsapp.com/${inviteCode}
+`, m)
 }
 break
 case 'ruku':
@@ -1267,6 +1272,7 @@ case 'npmjs': {
   });
 }
   break;
+case 'sfiledl':
 case 'sfile':
 case 'sfilemobi': {
   if (args.length < 1) return m.reply('Linknya mana?')
@@ -1828,9 +1834,88 @@ if (!text) throw m.reply(`Masukkan pertanyaan!\n\n*Contoh:* Siapa presiden Indon
   await Resta.sendTextWithMentions(m.chat, js.hasil, m)
 	} catch (err) {
 		m.reply(util.format(err))
+		try {
+			const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: await pickRandom(aikey),
+});
+const openai = new OpenAIApi(configuration);
+
+const completion = await openai.createCompletion({
+  model: "gpt-3.5-turbo",
+  prompt: text,
+});
+await m.reply(completion.data.choices[0].text);
+		} catch (e) {
+			m.reply(util.format(e))
+		}
 	}
   }
   break;  
+  case 'jadwalsholat':
+        case 'sholat':
+        case 'solat': {
+  if (!q) throw `Mana Querynya`;
+  async function jadwalSolat(tempat) {
+    try {
+      const cheerio = require("cheerio");
+      const cloudscraper = require("cloudscraper");
+      const html = await cloudscraper.get("https://jadwalsholat.org/jadwal-sholat/monthly.php");
+      const $ = cheerio.load(html);
+      const cities = {};
+      $("option").each((i, elem) => {
+        const city = $(elem).text().toLowerCase().replace(/ /g, "_");
+        const value = $(elem).attr("value");
+        cities[city] = value;
+      });
+      const city = cities[tempat.toLowerCase().replace(/ /g, "_")];
+      if (!city) {
+        throw "Maaf, kota yang Anda masukkan salah.";
+      }
+      const url = `https://jadwalsholat.org/jadwal-sholat/monthly.php?id=${parseInt(city)}`;
+      const scheduleHtml = await cloudscraper.get(url);
+      const $$ = cheerio.load(scheduleHtml);
+      const schedule = {};
+      schedule["tgl"] = $$(".table_highlight > td > b").text();
+      schedule["imsyak"] = $$(".table_highlight > td:nth-child(2)").text();
+      schedule["subuh"] = $$(".table_highlight > td:nth-child(3)").text();
+      schedule["terbit"] = $$(".table_highlight > td:nth-child(4)").text();
+      schedule["dhuha"] = $$(".table_highlight > td:nth-child(5)").text();
+      schedule["dzuhur"] = $$(".table_highlight > td:nth-child(6)").text();
+      schedule["ashr"] = $$(".table_highlight > td:nth-child(7)").text();
+      schedule["maghrib"] = $$(".table_highlight > td:nth-child(8)").text();
+      schedule["isya"] = $$(".table_highlight > td:nth-child(9)").text();
+      const parameters = [];
+      $$(".table_block_content > td[colspan]").each((i, elem) => {
+        parameters.push($$(elem).text());
+      });
+      schedule["parameter"] = parameters.join(" ");
+      return schedule;
+    } catch (err) {
+      console.log(err);
+      throw "Terjadi kesalahan saat memperoleh jadwal sholat.";
+    }
+  }
+  if (!text) {
+    return m.reply(`Contoh: ${prefix}solat ponorogo`);
+  }
+    const jadwal = await jadwalSolat(text.trim());
+    const date = new Date();
+    let txt = `Jadwal solat untuk wilayah ${text} hari ini:\n${readmore}`;
+    txt += `Tanggal: ${date.toLocaleDateString("id-ld")}\n`;
+    txt += `Imsyak: ${jadwal.imsyak}\n`;
+    txt += `Subuh: ${jadwal.subuh}\n`;
+    txt += `Terbit: ${jadwal.terbit}\n`;
+    txt += `Dhuha: ${jadwal.dhuha}\n`;
+    txt += `Dzuhur: ${jadwal.dzuhur}\n`;
+    txt += `Ashr: ${jadwal.ashr}\n`;
+    txt += `Maghrib: ${jadwal.maghrib}\n`;
+    txt += `Isya: ${jadwal.isya}\n`;
+    txt += `Parameter: ${jadwal.parameter}\n`;
+    await m.reply(txt);
+		}
+		break
 case 'aiimg':
 case 'serimg': {
 if (!q) return m.reply('Masukkan Text')
@@ -2032,7 +2117,7 @@ break
   await Resta.sendMessage(m.chat, {
     //image: await Resta.reSize(pickRandom(mylogo), 300, 150),
     text: `〖  *Menu ${namaBot}*  〗
-
+${readmore}
 👤 *Name:* ${db.data.users[m.sender].name}
 🎉 *Umur:* ${db.data.users[m.sender].age}
 🗃️ *Registered:* ${db.data.users[m.sender].registered ? '✅' : '❎'}
@@ -2040,6 +2125,7 @@ break
 📞 *Nomor:* @${m.sender.split("@")[0]}
 🗓️ *Masehi:* ${moment(Date.now()).tz('Asia/Jakarta').locale('id').format('dddd, DD MMMM YYYY')}
 📆 *Islamic:* ${Intl.DateTimeFormat('id' + '-TN-u-ca-islamic', {day: 'numeric', month: 'long', year: 'numeric'}).format(new Date(new Date + 3600000))}
+📡 *Server Date & Time:* ${moment.tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm:ss")} WIB
 ⏱️ *Count down:* 
 • *New Year:* ${await hitungmundur(01, 01)}
 • *My Birthday:* ${await hitungmundur(01, 28)}
@@ -2361,7 +2447,7 @@ ${readmore}
 │${ctc} ${prefix}translate <kode-bahasa> ${query}/Balas Teksnya
 │${ctc} ${prefix}play ${query}
 │${ctc} ${prefix}brainly ${query}
-│${ctc} ${prefix}lirik ${query}
+│${ctc} ${prefix}sholat ${query}
 │${ctc} ${prefix}cuaca ${query}
 │${ctc} ${prefix}ytsearch ${query}
 │${ctc} ${prefix}getvideo (balas yts)
@@ -2577,6 +2663,17 @@ ${readmore}
 │${ctc} ${prefix}1917 ${text}
 │${ctc} ${prefix}leaves ${text}
 │${ctc} ${prefix}demon ${text}
+│${ctc} ${prefix}crystal
+│${ctc} ${prefix}cage
+│${ctc} ${prefix}comic
+│${ctc} ${prefix}whitegold
+│${ctc} ${prefix}thunder
+│${ctc} ${prefix}matrix
+│${ctc} ${prefix}thewall
+│${ctc} ${prefix}neonlight
+│${ctc} ${prefix}slice
+│${ctc} ${prefix}transformer
+│${ctc} ${prefix}neonlight2
 │
 └───────⭓`,
     //buttons: buttons,
@@ -2975,13 +3072,13 @@ break;
 //TEXT MAKER//
     case 'candy': case 'christmas': case '3dchristmas': case 'sparklechristmas':
     case 'deepsea': case 'scifi': case 'rainbow2': case 'waterpipe': case 'spooky': 
-    case 'pencil': case 'circuit': case 'discovery': case 'metalic': case 'fiction': case 'demon': 
+    case 'pencil': case 'circuit': case 'discovery': case 'metalic': case 'fiction': case 'demon': case 'crystal':
     case 'transformer': case 'berry': case 'thunder': case '.': case '3dstone2': 
     case 'neonlight': case 'glitch': case 'harrypotter': case 'brokenglass': case 'papercut': 
     case 'watercolor': case 'multicolor': case 'neondevil': case 'underwater': case 'graffitibike':
     case 'snow': case 'cloud': case 'honey': case 'ice': case 'fruitjuice': case 'biscuit': case 'wood': 
     case 'chocolate': case 'strawberry': case 'matrix': case 'blood': case 'dropwater': case 'toxic': 
-    case 'lava': case 'rock': case 'bloodglas': case 'halloween': case 'darkgold': case 'joker': case 'wicker':
+    case 'lava': case 'rock': case 'bloodglas': case 'halloween': case 'darkgold': case 'joker': case 'wicker': case 'cage': case 'comic': case 'whitegold': case 'thunder': case 'matrix': case 'thewall': case 'neonlight': case 'slice': case 'transformer': case 'neonlight2':
     case 'firework': case 'skeleton': case 'blackpink': case 'sand': case 'glue': case '1917': case 'leaves': case 'demon': {
 	           if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
                if (!q) return m.reply(`Example : ${prefix + command} ${global.ownerName}`)                 
@@ -3043,7 +3140,18 @@ break;
                if (/sand/.test(command)) link = 'https://textpro.me/write-in-sand-summer-beach-free-online-991.html'
                if (/glue/.test(command)) link = 'https://textpro.me/create-3d-glue-text-effect-with-realistic-style-986.html'
                if (/1917/.test(command)) link = 'https://textpro.me/1917-style-text-effect-online-980.html'
-               if (/leaves/.test(command)) link = 'https://textpro.me/natural-leaves-text-effect-931.html'           
+               if (/leaves/.test(command)) link = 'https://textpro.me/natural-leaves-text-effect-931.html' 
+               if (/crystal/.test(command)) link = 'https://textpro.me/shiny-crystal-3d-style-text-effect-online-1122.html'		
+               if (/cage/.test(command)) link = 'https://textpro.me/create-cage-text-effect-online-1110.html'	
+               if (/comic/.test(command)) link = 'https://textpro.me/create-3d-comic-text-effects-online-1091.html'	
+               if (/whitegold/.test(command)) link = 'https://textpro.me/elegant-white-gold-3d-text-effect-online-free-1070.html'	
+               if (/thunder/.test(command)) link = 'https://textpro.me/online-thunder-text-effect-generator-1031.html'	
+               if (/matrix/.test(command)) link = 'https://textpro.me/matrix-style-text-effect-online-884.html'	
+               if (/thewall/.test(command)) link = 'https://textpro.me/break-wall-text-effect-871.html'	
+               if (/neonlight/.test(command)) link = 'https://textpro.me/neon-light-text-effect-with-galaxy-style-981.html'	
+               if (/slice/.test(command)) link = 'https://textpro.me/create-light-glow-sliced-text-effect-online-1068.html'	
+               if (/transformer/.test(command)) link = 'https://textpro.me/create-a-transformer-text-effect-online-1035.html'	
+               if (/neonlight2/.test(command)) link = 'https://textpro.me/create-glowing-neon-light-text-effect-online-free-1061.html'				   
                anu = await textpro(link, q)
                Resta.sendMessage(m.chat, { image: { url: anu }, caption: `Made by ${global.namaBot}` }, { quoted: m })
                }
@@ -3407,7 +3515,13 @@ break
                 Resta.sendImage(m.chat, json.profilePicHD, iggs, m)
                 } catch (err) {
                 console.log(err)
-                await Resta.sendMessage(m.chat, { image : { url:  global.erorurl }, caption: String(err)}, { quoted: m })
+                try {
+				const jeson = await fetchJson(`https://xznsenpai.xyz/api/igstalk?user=${args[0]}`)
+				txt = `▢ *Username:* ${jeson.username}\n▢ *Nickname:* ${jeson.fullname}\n▢ *Followers:* ${jeson.followers}\n▢ *Following:* ${json.following}\n▢ *Posting:* ${jeson.posts}\n▢ *Link:* https://instagram.com/${jeson.username}\n▢ *Bio:* ${jeson.bio}`
+				Resta.sendImage(m.chat, jeson.photo_profile, txt, m)
+				} catch (e) {
+					console.log(e)
+				}
                 }
                 break
      case 'githubstalk':
@@ -3725,52 +3839,110 @@ case 'ytmp4':
     }
   }
   break;    
+  case 'igfoto':
    case 'ig':
    case 'igdl':
 case 'igmp4':
 case 'igvideo': {
   if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-  if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
-    const results = (await instagramGetUrl(args[0])).url_list[0]
+  if (!q) return m.reply(`Use example...\n ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
+	  m.reply(mess.wait)
+function instagramGetUrl(url_media) {
+  return new Promise(async (resolve, reject) => {
+    const BASE_URL = "https://www.instagram.com/p/";
+    const postId = url_media
+      .replace(" ", "")
+      .split("/")
+      .filter((x) => x.length > 0)[3];
+    //New Session = Cookies
+    try {
+      const resp = await axios(BASE_URL);
 
-    await Resta.sendMessage(m.chat, {video:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
+      //REQUEST CONFIG
+      var config = {
+        method: "get",
+        url: `${BASE_URL}${postId}/?utm_source=ig_web_copy_link?&__a=1&__d=1`,
+        headers: {
+          "sec-fetch-dest": "document",
+          "sec-fetch-mode": "navigate",
+          "sec-fetch-site": "none",
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.52",
+          // 'Content-Type': 'application/json'
+        },
+      };
+
+      //REQUEST
+      axios(config)
+        .then(function (response) {
+          const result = response.data.graphql.shortcode_media;
+          if (result) {
+            if (result.is_video) {
+              resolve(result.video_url);
+            } else {
+              resolve(result.display_url);
+            }
+          }
+        })
+        .catch(function (error) {
+          reject(error.message);
+        });
+    } catch (e) {
+      reject(e.message);
+    }
+  });
+}
+
+    await Resta.sendFileUrl(m.chat, await instagramGetUrl(q), `*Instagram Downloader*`, m)
 }
 break;
-     case 'igfoto':{
-  if (!db.data.users[m.sender].registered) return m.reply(mess.regis)
-  if (!q) return m.reply(`Use example ${command} https://www.instagram.com/reel/CsC-4wDL0oO/?igshid=NTc4MTIwNjQ2YQ==`)
-    const results = (await instagramGetUrl(args[0])).url_list[0]
-
-    await Resta.sendMessage(m.chat, {image:{ url:results}, caption:`*Instagram Downloader*`}, {quoted:m})
-}
-                break
       case 'fbdown':
  case 'fb':
  case 'facebook':
  case 'fbdl':{
-if (!args[0]) {
-      throw m.reply(`Masukkan URL!\n\ncontoh:\n${command} https://www.facebook.com/watch/?v=1393572814172251`);
-    }
-    try {
-      m.reply(mess.wait);
-      const response = await fetch(lannn+'/api/download/fbdown?url='+args[0]+'&apikey='+lannkey);
-      if (!response.ok) {
-        throw await response.text();
-      }
-      const result = await response.json();
-      if (!result.status) {
-        throw result;
-      }
-      const { Normal_video, HD } = result.result;
-      const fileToSend = Normal_video || HD;
-      if (!fileToSend) {
-        throw m.reply('Tidak dapat menemukan file video Facebook.');
-      }
-      await Resta.sendMessage(m.chat, { document: {url:fileToSend}, mimetype: 'video/mp4', caption: args[0], fileName: command+'.mp4'},{quoted:m})
-    } catch (err) {
-      console.error(err);
-      m.reply(util.format(err));
-    }
+if (!q) 
+      throw `Masukkan URL!\n\ncontoh:\n${command} https://www.facebook.com/watch/?v=1393572814172251`
+  m.reply(mess.wait)
+async function fbdl2(Link) {
+	return new Promise (async (resolve, reject) => {
+		const BodyForm = {
+			url: Link
+		}
+		await axios({
+			url: "https://www.getfvid.com/downloader",
+			method: "POST",
+			data:  new URLSearchParams(Object.entries(BodyForm)),
+			headers: {
+				"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+				"accept-language": "en-US,en;q=0.9,id;q=0.8",
+				"cache-control": "max-age=0",
+				"content-type": "application/x-www-form-urlencoded",
+				"sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"90\", \"Google Chrome\";v=\"90\"",
+				'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
+			}
+		}).then(respon => {
+			const $ = cheerio.load(respon.data)
+			let HD = $("body > div.page-content > div > div > div.col-lg-10.col-md-10.col-centered").find('div > div:nth-child(3) > div > div.col-md-4.btns-download > p:nth-child(1) > a').attr('href')
+			let Normal = $("body > div.page-content > div > div > div.col-lg-10.col-md-10.col-centered").find('div > div:nth-child(3) > div > div.col-md-4.btns-download > p:nth-child(2) > a').attr("href")
+			let AU = $("body > div.page-content > div > div > div.col-lg-10.col-md-10.col-centered > div > div:nth-child(3) > div > div.col-md-4.btns-download > p:nth-child(3) > a").attr("href")
+      let tt = $("body > div.page-content > div > div > div.col-lg-10.col-md-10.col-centered > div > div:nth-child(3) > div > div.col-md-5.no-padd > div > h5 > a").text()
+			const result = {
+				status: true,
+				author: "@VihangaYT",
+				result: {
+         	Title: tt,
+					HD: HD,
+					SD: Normal,
+          Audio: AU
+				}
+			}
+			resolve(result)
+		}).catch(reject)
+	})
+}
+await fbdl2(q).then(p => {
+Resta.sendFileUrl(m.chat, p.result.HD, `*Facebook Downloader*`, m)
+})
  }
  break
      case 'soundcloud':{
@@ -3827,142 +3999,186 @@ if (!args[0]) {
                  }
                  break
        case 'cuaca': {
-if (!q) return m.reply(`_Contoh_\n${prefix+command} palembang`)
-let api_cuaca = '18d044eb8e1c06eaf7c5a27bb138694c'
-let unit_cuaca = 'metric'
-let nama_kota = q
-let cuaca = await fetchJson(`http://api.openweathermap.org/data/2.5/weather?q=${nama_kota}&units=${unit_cuaca}&appid=${api_cuaca}`)
-let text_cuaca =`*INFO CUACA*
-Nama: ${cuaca.name + "," + cuaca.sys.country}
+  if (!q) return m.reply(`Contoh: ${prefix}cuaca palembang`)
+
+  const api_cuaca = '18d044eb8e1c06eaf7c5a27bb138694c'
+  const unit_cuaca = 'metric'
+  const nama_kota = q
+  const cuaca = await fetchJson(`http://api.openweathermap.org/data/2.5/weather?q=${nama_kota}&units=${unit_cuaca}&appid=${api_cuaca}`)
+
+  if (cuaca.cod === '404') {
+    // Jika kota tidak ditemukan, maka balas dengan pesan berikut
+    return m.reply('Kota tidak ditemukan')
+  }
+
+  const text_cuaca = `*INFO CUACA*
+Nama: ${cuaca.name}, ${cuaca.sys.country}
 Longitude: ${cuaca.coord.lon}
 Latitude: ${cuaca.coord.lat}
-Suhu: ${cuaca.main.temp + " C"}
-Angin: ${cuaca.wind.speed + " m/s"}
-Kelembaban: ${cuaca.main.humidity + "%"}
+Suhu: ${cuaca.main.temp} C
+Angin: ${cuaca.wind.speed} m/s
+Kelembaban: ${cuaca.main.humidity} %
 Cuaca: ${cuaca.weather[0].main}
 Keterangan: ${cuaca.weather[0].description}
-Udara: ${cuaca.main.pressure + " HPa"}`
-m.reply(text_cuaca)
+Udara: ${cuaca.main.pressure} HPa`
+
+  m.reply(text_cuaca)
 }
 break
-case 'covid':{
+case 'covidworld':{
 const t = await copid()
 var { kasus, kematian, sembuh } = t[0]
 Resta.sendMessage(from, {text : `*COVID IN WORLD*\n\nKasus : ${kasus}\n\nKematian : ${kematian}\n\nSembuh : ${sembuh}`}, m)
 }
 break
-case 'covidindo':{
-const c = await covid()
+case 'covid':{
+if (!q) throw `Mana Querynya!!!`
+const c = await covid(q)
 var { kasus, kematian, sembuh } = c[0]
-Resta.sendMessage(from, {text : `*COVID IN INDONESIA*\n\nKasus : ${kasus}\n\nKematian : ${kematian}\n\nSembuh : ${sembuh}`}, m)
+Resta.sendMessage(from, {text : `*COVID IN ${q}*\n\nKasus : ${kasus}\n\nKematian : ${kematian}\n\nSembuh : ${sembuh}`}, m)
 }
-break
-case 'fbdown':
-case 'fb':
-  case 'fbdl':{
-if (!args[0]) {
-      throw m.reply(`Masukkan URL!\n\ncontoh:\n${command} https://www.facebook.com/watch/?v=1393572814172251`);
-    }
-    try {
-      m.reply(mess.wait);
-      const response = await fetch(lannn+'/api/download/fbdown?url='+args[0]+'&apikey='+lannkey);
-      if (!response.ok) {
-        throw await response.text();
-      }
-      const result = await response.json();
-      if (!result.status) {
-        throw result;
-      }
-      const { Normal_video, HD } = result.result;
-      const fileToSend = Normal_video || HD;
-      if (!fileToSend) {
-        throw m.reply('Tidak dapat menemukan file video Facebook.');
-      }
-      await Resta.sendMessage(m.chat, { document: {url:fileToSend}, mimetype: 'video/mp4', caption: args[0], fileName: command+'.mp4'},{quoted:m})
-    } catch (err) {
-      console.error(err);
-      m.reply(util.format(err));
-    }
- }
-    break        
+break      
        case 'tiktoknowm':
 	   case 'tiktokdl':
        case 'tiktok':
 case 'tt': {
-	try {
-		if (!db.data.users[m.sender].registered)
-			return m.reply(mess.regis)
+	if (!q) throw `Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
+	m.reply(mess.wait)
+	const { load } = require('cheerio');
+	function getKey(page) {
+  const regex = /key=([0-9a-f-]+)/;
+  const key = page.text().match(regex);
+  return key ? key[1] : null;
+};
+	async function ttdl(link) {
+  let host = 'https://ttsave.app';
+  let body, headers,
+    res = await needle('get', host), 
+    $ = load(res.body);
 
-		const url = args[0]
-		if (!url)
-			throw `Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
-		if (!url.match(/tiktok/gi))
-			throw `Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
-        m.reply(mess.wait)
-await iky.downloader.tiktok(url).then(p => {
+  try {
+    host = `https://ttsave.app/download?mode=video&key=${getKey($('script[type="text/javascript"]'))}`;
+    body = { id: link };
+    headers = { "User-Agent": "PostmanRuntime/7.31.1" };
+    res  = await needle("post", host, body, {headers, json: true});
+    $ = load(res.body);
 
-		Resta.sendMessage(from, {video:{url: p.result.video.nowm.video_url}, mimetype:"video/mp4", caption: `*TIKTOK DOWNLOADER*\n\n- Author: ${p.author}\n- Author Name: ${p.author_name}\n- Desc: ${p.desc}`}, {quoted:m})
-})
-	} catch (err) {
-		if (err.message != 'Promise pending') {
-			m.reply(util.format(err))
-		}
-	}
+    return {
+      success: true,
+      author: {
+        name: $('div div h2').text(),
+        profile: $('div a').attr('href'),
+        username: $('div a.font-extrabold.text-blue-400.text-xl.mb-2').text()
+      },
+      video: {
+        thumbnail: $('a[type="cover"]').attr('href'),
+        views: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(1) span').text(),
+        loves: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(2) span').text(),
+        comments: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(3) span').text(),
+        shares: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(4) span').text(),
+        url: {
+          no_wm: $("a:contains('DOWNLOAD (WITHOUT WATERMARK)')").attr("href"),
+          wm: $("a:contains('DOWNLOAD (WITH WATERMARK)')").attr("href"),
+        }
+      },
+      backsound: {
+        name: $('div.flex.flex-row.items-center.justify-center.gap-1.mt-5 span').text(),
+        url: $("a:contains('DOWNLOAD AUDIO (MP3)')").attr("href")
+      }
+    }
+  } catch (error) {
+    console.error(error)
+console.log("\n[!] Something error, error saved to log/error.json\n")
+    return { success: false }
+  }
+}
+await ttdl(q)
+  .then((result) => {
+    Resta.sendFileUrl(m.chat, result.video.url.no_wm, `*Tiktok Downloader*`, m)
+  })
 }
 break;			 
      case 'tiktokmp3':
      case 'tiktokmusic':
 	 case 'tiktokmusicdl':
 	 case 'ttmp3': {
-	try {
-		if (!db.data.users[m.sender].registered)
-			return m.reply(mess.regis)
+	if (!q) throw `Perintah ini untuk mengunduh audio TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
+	m.reply(mess.wait)
+	const { load } = require('cheerio');
+	function getKey(page) {
+  const regex = /key=([0-9a-f-]+)/;
+  const key = page.text().match(regex);
+  return key ? key[1] : null;
+};
+	async function ttdl(link) {
+  let host = 'https://ttsave.app';
+  let body, headers,
+    res = await needle('get', host), 
+    $ = load(res.body);
 
-		const url = args[0]
-		if (!url)
-			throw `Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
-		if (!url.match(/tiktok/gi))
-			throw `Link salah! Perintah ini untuk mengunduh video TikTok dengan link. Contoh: ${prefix + command} https://vm.tiktok.com/ZGJAmhSrp/`
-        m.reply(mess.wait)
-await iky.downloader.tiktok(url).then(p => {
+  try {
+    host = `https://ttsave.app/download?mode=audio&key=${getKey($('script[type="text/javascript"]'))}`;
+    body = { id: link };
+    headers = { "User-Agent": "PostmanRuntime/7.31.1" };
+    res  = await needle("post", host, body, {headers, json: true});
+    $ = load(res.body);
 
-		 Resta.sendMessage(from, {document:{url: p.result.audio.audio_url}, mimetype:"audio/mpeg", caption: `*TIKTOK DOWNLOADER*\n\n- Author: ${p.author}\n- Author Name: ${p.author_name}\n- Desc: ${p.desc}`, fileName: p.author+'.mp3'}, {quoted:m})
-})
-	} catch (err) {
-		if (err.message != 'Promise pending') {
-			m.reply(util.format(err))
-		}
-	}
+    return {
+      success: true,
+      author: {
+        name: $('div div h2').text(),
+        profile: $('div a').attr('href'),
+        username: $('div a.font-extrabold.text-blue-400.text-xl.mb-2').text()
+      },
+      audio: {
+        thumbnail: $('a[type="cover"]').attr('href'),
+        views: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(1) span').text(),
+        loves: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(2) span').text(),
+        comments: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(3) span').text(),
+        shares: $('div.flex.flex-row.items-center.justify-center.gap-2.mt-2 div:nth-child(4) span').text(),
+        url: $("a:contains('DOWNLOAD AUDIO (MP3)')").attr("href")
+      }
+    }
+  } catch (error) {
+    console.error(error)
+console.log("\n[!] Something error, error saved to log/error.json\n")
+    return { success: false }
+  }
+}
+await ttdl(q)
+  .then((result) => {
+    Resta.sendMessage(m.chat, {document: {url:result.audio.url}, mimetype: 'audio/mpeg', fileName: result.author.name+'mp3'},{quoted:m})
+  })
 }
 break		
 		        case 'jarak': {
-    try {
-        const [from, to] = text.split("|")
-        if (!(from && to)) throw m.reply("Contoh: " + prefix + "jarak jakarta|bandung")
-        const data = await jarak(from.trim(), to.trim())
-        if (data.img) {
-            await Resta.sendMessage(m.chat, { image: data.img, caption: data.desc }, { quoted: m })
-        } else {
-            await m.reply(data.desc)
-        }
-    } catch (error) {
-        console.log(error)
-        await m.reply(util.format(error))
+  try {
+    const [from, to] = text.split("|")
+    if (!(from && to)) throw new Error("Contoh: " + prefix + "jarak jakarta|bandung")
+    const data = await getDistance(from.trim(), to.trim())
+    if (data.img) {
+      await Resta.sendMessage(m.chat, { image: data.img, caption: data.desc }, { quoted: m })
+    } else {
+      await m.reply(data.desc)
     }
+  } catch (error) {
+    console.log(error)
+    await m.reply(util.format(error))
+  }
 
-async function jarak(dari, ke) {
-    try {
-        const html = (await axios.get(`https://www.google.com/search?q=${encodeURIComponent('jarak ' + dari + ' ke ' + ke)}&hl=id`)).data
-        const $ = cheerio.load(html)
-        const obj = {}
-        const img = html.split("var s=\'")?.[1]?.split("\'")?.[0]
-        obj.img = /^data:.*?\/.*?;base64,/i.test(img) ? Buffer.from(img.split(',')[1], 'base64') : ''
-        obj.desc = $('div.BNeawe.deIvCb.AP7Wnd').text()?.trim()
-        return obj
-    } catch (error) {
-        console.log(error)
-        throw "Terjadi kesalahan saat memproses permintaan jarak"
-    }
+async function getDistance(from, to) {
+  try {
+    const html = (await axios.get(`https://www.google.com/search?q=${encodeURIComponent('jarak ' + from + ' ke ' + to)}&hl=id`)).data
+    const $ = cheerio.load(html)
+    const obj = {}
+    const img = html.split("var s=\'")?.[1]?.split("\'")?.[0]
+    obj.img = /^data:.*?\/.*?;base64,/i.test(img) ? Buffer.from(img.split(',')[1], 'base64') : ''
+    obj.desc = $('div.BNeawe.deIvCb.AP7Wnd').text()?.trim()
+    return obj
+  } catch (error) {
+    console.log(error)
+    throw new Error("Terjadi kesalahan saat memproses permintaan jarak")
+  }
 }
 }
 break
@@ -4253,7 +4469,7 @@ break
                 let encmedia = await Resta.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else {
-                throw m.reply(`*Kirim Gambar/Video Dengan Caption* ${prefix + command}\nDurasi *Video 1-9 Detik*`)
+                throw `*Kirim Gambar/Video Dengan Caption* ${prefix + command}\nDurasi *Video 1-9 Detik*`
                 }
                  }
                  break
@@ -4340,12 +4556,24 @@ await m.reply(evaled)
 await m.reply(util.format(err))}}
 
 if (budy.startsWith('$')) {
-                    if (!isOwner) return m.reply(mess.botOwner)
-                    exec(budy.slice(2), (err, stdout) => {
-                        if(err) return m.reply(util.format(err))
-                        if (stdout) return m.reply(util.format(stdout))
-                    })
-                }
+  if (!isOwner) {
+    return m.reply('Maaf, hanya pemilik bot yang diperbolehkan untuk mengeksekusi perintah shell.')
+  }
+  const command = budy.slice(1).trim()
+  if (!command) {
+    return m.reply('Undepined:v')
+  }
+  const { exec } = require('child_process')
+  exec(command, (err, stdout, stderr) => {
+    if (err) {
+      return m.reply(err.message)
+    }
+    const output = `${stdout}${stderr}`
+    if (output) {
+      return m.reply(output)
+    }
+  })
+}
 
 }
 // Anti Tag ( FenZo||77+ )

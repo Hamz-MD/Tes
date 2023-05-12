@@ -24,11 +24,11 @@ global.doc8 = 'audio/mpeg'
 global.doc9 = 'video/mp4'
 global.mylogo = ["https://telegra.ph/file/75a3b01da9934ead5890e.jpg","https://telegra.ph/file/38e0c6fcaa71551ed6407.jpg","https://telegra.ph/file/551ccaa299c0b37e80b59.jpg","https://telegra.ph/file/4feacc10e29b71072bc91.jpg","https://telegra.ph/file/05e2ab0424961897838e0.jpg","https://telegra.ph/file/8d25c175697d2dc40107a.jpg","https://telegra.ph/file/a0eab20252073b35a332f.jpg"]
 global.aikey = [
-    "sk-bq2v5nygdeudbsrexi89t3blbkfjhswmke797vtfuhhag3d5",
-    "sk-mjnnvfw8qkhkgld9efdst3blbkfjitoqp8bkwfqffuuwqbvt",
-    "sk-6zvuufmbkuydhfpgmv9xt3blbkfj2r2jon6vkwf70wnznd2c",
-    "sk-uwd0pzmuybmn93ubzsgft3blbkfje0rj9b6ggpwrlf0urg77",
-    "sk-d2or4gcwycd9uvo5fbggt3blbkfj4jtjhlcxkdssabubjs0e"
+    "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",
+    "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",
+    "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",
+    "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",
+    "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"
 ]
 //Message Nya Ubah Disini
 global.mess = {

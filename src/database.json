@@ -2747,8 +2747,8 @@
       "autolevelup": true
     },
     "6285879466965@s.whatsapp.net": {
-      "afkTime": 1683797353167,
-      "afkReason": "@6281233649676",
+      "afkTime": -1,
+      "afkReason": "",
       "pasangan": "",
       "registered": true,
       "name": "konsol",
@@ -17291,8 +17291,8 @@
       "autolevelup": true
     },
     "6285798278364@s.whatsapp.net": {
-      "afkTime": -1,
-      "afkReason": "",
+      "afkTime": 1683897719414,
+      "afkReason": "mls",
       "pasangan": "6287810713428@s.whatsapp.net",
       "registered": true,
       "name": "salsa",
@@ -17962,10 +17962,10 @@
       "afkTime": -1,
       "afkReason": "",
       "pasangan": "",
-      "registered": false,
-      "name": "~𝐈 𝐀𝐦 𝐄𝐧𝐝𝐞𝐫𝐒~",
-      "age": -1,
-      "regTime": -1,
+      "registered": true,
+      "name": "Beluga-SUS",
+      "age": 19,
+      "regTime": 1683897516452,
       "exp": 0,
       "level": 0,
       "autolevelup": true
@@ -21132,10 +21132,10 @@
       "afkTime": -1,
       "afkReason": "",
       "pasangan": "",
-      "registered": false,
-      "name": "Lewi Harrington",
-      "age": -1,
-      "regTime": -1,
+      "registered": true,
+      "name": "Yahahahyaha",
+      "age": 19,
+      "regTime": 1683897457676,
       "exp": 0,
       "level": 0,
       "autolevelup": true
@@ -23582,7 +23582,9 @@
       "name": "Ace Ukiyo",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6285249144757@s.whatsapp.net": {
       "afkTime": -1,
@@ -23714,10 +23716,10 @@
       "afkTime": -1,
       "afkReason": "",
       "pasangan": "",
-      "registered": false,
-      "name": "biyaaa sudah cape",
-      "age": -1,
-      "regTime": -1,
+      "registered": true,
+      "name": "bilaa",
+      "age": 15,
+      "regTime": 1683867851220,
       "exp": 0,
       "level": 0,
       "autolevelup": true
@@ -23812,7 +23814,9 @@
       "name": "bi",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6283175007441@s.whatsapp.net": {
       "afkTime": -1,
@@ -23974,7 +23978,9 @@
       "name": "Y??",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6282293127862@s.whatsapp.net": {
       "afkTime": -1,
@@ -23996,7 +24002,9 @@
       "name": "Erick",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6287748679006@s.whatsapp.net": {
       "afkTime": -1,
@@ -24042,7 +24050,9 @@
       "name": "Hallen",
       "age": -1,
       "regTime": -1,
-      "exp": 0
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
     },
     "6281949641059@s.whatsapp.net": {
       "afkTime": -1,
@@ -24164,6 +24174,580 @@
       "pasangan": "",
       "registered": false,
       "name": "yrug",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282335893024@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "🗿Hanz",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282286102876@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "minjxukiem",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "62895325190109@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "hana",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282155821578@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Its.cysa",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281548029060@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Hazzk",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285326070157@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Itz Rayy Sanzz",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282371159690@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "TANJIRO•🔥💦",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6288238631554@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "M. Suhud",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281271571349@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Wilᥫ᭡Ytta🫶🏻",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285342219543@s.whatsapp.net": {
+      "afkTime": 1683897665696,
+      "afkReason": "ngising",
+      "pasangan": "",
+      "registered": true,
+      "name": "arum",
+      "age": 16,
+      "regTime": 1683816396849,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281936013386@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Raja Ac 👑",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6289656472080@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "~(RIDHO)",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6289514115900@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": true,
+      "name": "Rachel",
+      "age": 16,
+      "regTime": 1683855416110,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6287818243555@s.whatsapp.net": {
+      "afkTime": 1683897150984,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": true,
+      "name": "vano",
+      "age": 10,
+      "regTime": 1683897109171,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285600250734@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Initials \"H\"",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "628988189570@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Hehehe...",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6283862270450@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": true,
+      "name": "Nana",
+      "age": 17,
+      "regTime": 1683854466449,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285962322470@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "wahyu speed up",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6283815888387@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "❦𝕯𝖚𝖙𝖆 𝙴𝚂𝙴𝙼𝙿𝙴❦",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6287899734978@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Fatimah.",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6287723481321@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Noval Andika Pratama",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281339186768@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "M",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6281311831918@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": true,
+      "name": "Noval",
+      "age": 14,
+      "regTime": 1683862956641,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6287856915280@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Eve",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6288220043896@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "r",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6288214542508@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "rzkiryaa_",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281907770072@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "pu (◞ ‸ ◟ㆀ)",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285692908251@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "†Kêvïñ†",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6287763653182@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Baker Street 221b",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281212181641@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Ikybot official pertama",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "919997512787@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "We live, we love, we lie",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "62895383436942@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": ".",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6283114907245@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "🐣Rosilah",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6285745721524@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "perf",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285608064356@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "admin YouTube",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285842025014@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "ZinXfv?",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282145210196@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "elii",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6283102442192@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Mk.",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285738145183@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Ajax",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6283837769299@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "_dela_",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285810951821@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "NasaBotz",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "628875305142@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "P?",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282170672048@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": ".",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6285343757090@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": ".",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "62882016626297@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "kiky",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6281991189675@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Kèn-",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6285875407133@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "syahrandy_ 0kt",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6282252060812@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": ".",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0
+    },
+    "6283861969302@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "iM4You",
+      "age": -1,
+      "regTime": -1,
+      "exp": 0,
+      "level": 0,
+      "autolevelup": true
+    },
+    "6289509111395@s.whatsapp.net": {
+      "afkTime": -1,
+      "afkReason": "",
+      "pasangan": "",
+      "registered": false,
+      "name": "Muhammad Yahya",
       "age": -1,
       "regTime": -1,
       "exp": 0
@@ -27187,6 +27771,88 @@
       "welcome": false
     },
     "120363132710074279@g.us": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6282286102876@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "62895325190109@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "120363133703228349@g.us": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6289514115900@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6281339186768@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6285600250734@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6281311831918@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false
+    },
+    "6282110762600@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false
+    },
+    "919997512787@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6283102442192@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6288803617785@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6283804341044@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6285810951821@s.whatsapp.net": {
+      "antivionce": false,
+      "antilink": false,
+      "maintenance": false,
+      "welcome": false
+    },
+    "6289509111395@s.whatsapp.net": {
       "antivionce": false,
       "antilink": false,
       "maintenance": false
